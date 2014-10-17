@@ -95,7 +95,7 @@ def handle_short():
         short = request.args.get['url']
         destination = db.get(short) #needs to return 404
         if (destination == None) {
-            resp = make_response("No url is associated with this short url",404);
+            resp = flask.make_response("No url is associated with this short url",404);
             return resp
         }
         app.logger.debug("Redirecting to " + destination)
