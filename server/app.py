@@ -91,7 +91,15 @@ def handle_short():
         message = "Stored " + short + " as: " + link
         return message
     elif (request.method == 'GET'):
-        # implement GET logic.
+        # implement GET logic. 
+        short = request.args.get['url']
+        destination = db.get(short) #needs to return 404
+        if (destination == None) {
+            resp = make_response("No url is associated with this short url",404);
+            return resp
+        }
+        app.logger.debug("Redirecting to " + destination)
+        return flask.redirect(destination)
 
 
 if __name__ == "__main__":
