@@ -92,7 +92,7 @@ def handle_short():
         return message
     elif (request.method == 'GET'):
         # implement GET logic.
-        for item in request.args.get('url'):
+        for item in request.args:
             print item
         short = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + str(request.args.get('url'))
         print short
