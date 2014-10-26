@@ -86,13 +86,13 @@ def i253():
 def handle_short():
     if (request.method == 'POST'):
         link = str(request.form['url'])
-        short = str(request.form['short'])
+        short = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + str(request.form['short'])
         db[short] = link
-        message = "Stored " + short + " as: " + link
+        message = "Associated " + short + " with: " + link
         return message
     elif (request.method == 'GET'):
         # implement GET logic. 
-        short = str(request.args.get['url'])
+        short = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + str(request.args.get['url'])
         destination = db.get(short) #needs to return 404
         if (destination == None):
             resp = flask.make_response("No url is associated with this short url",404);
