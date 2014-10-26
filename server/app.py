@@ -92,8 +92,8 @@ def handle_short():
         return message
     elif (request.method == 'GET'):
         # implement GET logic.
-        for item in request.args:
-            print item
+        print "Enters GET"
+        print request.args.get
         short = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + str(request.args.get('url'))
         print short
         destination = db.get(short) #needs to return 404
