@@ -82,7 +82,7 @@ def i253():
 # Associates and the specified url with a shortened link.
 # Returns the association on success.
 ###
-@app.route('/shorts' methods = ['POST', 'GET'])
+@app.route('/shorts', methods=['POST', 'GET'])
 def handle_short():
     if (request.method == 'POST'):
         link = request.form['url']
