@@ -93,6 +93,7 @@ def handle_short():
     elif (request.method == 'GET'):
         # implement GET logic. 
         short = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + str(request.args.get['url'])
+        print short
         destination = db.get(short) #needs to return 404
         if (destination == None):
             resp = flask.make_response("No url is associated with this short url",404);
