@@ -98,7 +98,15 @@ def handle_short_get(short_link):
         resp = flask.make_response("404: No url is associated with this short url",404);
         return resp
     app.logger.debug("Redirecting to " + destination)
-    return flask.redirect(destination)
+    corrected_dest = correctURL(destination)
+    return flask.redirect(corrected_dest)
+
+def correctURL(destination):
+    if (destination[0:8] == "https://"):
+        return destination
+    elif (destination[0:7] == "http://"):
+        return destination
+    return "http://" + destination
 
 if __name__ == "__main__":
     app.run(port=int(environ['FLASK_PORT']))
