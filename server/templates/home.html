@@ -65,8 +65,9 @@
   						if (xmlhttp.readyState==4 && xmlhttp.status==200) {
   							xmlDoc = xmlhttp.responseText;
   							document.getElementById("responseDiv").innerHTML = xmlDoc.getElementsByTagName("newlink").childNodes[0].nodeValue;
-  							audio = xmlDoc.getElementsByTagName("audio").childNodes[0].nodeValue;
-  							// Need to set audio and play it
+  							audio = xmlDoc.getElementsByTagName("audioFile").childNodes[0].nodeValue;
+  							document.getElementById("mp3").src = audio;
+  							document.getElementById("mp3").play();
     					}
   					}
   					search = document.getElementById("searchBar").value;
@@ -76,7 +77,7 @@
 					xmlhttp.send();
 				}
 				/* Use this to get the next song when a song is skipped or ended.*/
-				function getNextSongOnSkip(skipped) {
+				function getNextSong(skipped) {
 					if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
   						xmlhttp = new XMLHttpRequest();
   					} else {// code for IE6, IE5
@@ -85,8 +86,9 @@
 					xmlhttp.onreadystatechange=function() {
   						if (xmlhttp.readyState==4 && xmlhttp.status==200) {
   							xmlDoc = xmlhttp.responseText;
-  							audio = xmlDoc.getElementsByTagName("audio").childNodes[0].nodeValue;
-  							// Need to set audio and play it
+  							audio = xmlDoc.getElementsByTagName("audiofile").childNodes[0].nodeValue;
+  							document.getElementById("mp3").src = audio;
+  							document.getElementById("mp3").play()
     					}
   					}
   					shortLink = document.getElementById("responseDiv").value
