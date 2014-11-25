@@ -54,11 +54,51 @@
 						$('input[type=submit]').attr('disabled', 'disabled');
 					}
 				}
-				
+				/* Use this function to send POST requests to server when a new search is typed in. */
+				function searchBtnClick() {
+					if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+  						xmlhttp = new XMLHttpRequest();
+  					} else {// code for IE6, IE5
+  						xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  					}
+					xmlhttp.onreadystatechange=function() {
+  						if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+  							xmlDoc = xmlhttp.responseText;
+  							document.getElementById("responseDiv").innerHTML = xmlDoc.getElementsByTagName("newlink").childNodes[0].nodeValue;
+  							audio = xmlDoc.getElementsByTagName("audio").childNodes[0].nodeValue;
+  							// Need to set audio and play it
+    					}
+  					}
+  					search = document.getElementById("searchBar").value;
+  					link = document.getElementById("short_link").value;
+  					req = "http://people.ischool.berkeley.edu/~azimmomin/server/playlist?search=" + search + "&short=" + link;
+					xmlhttp.open("POST", req, true);
+					xmlhttp.send();
+				}
+				/* Use this to get the next song when a song is skipped or ended.*/
+				function getNextSongOnSkip(skipped) {
+					if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+  						xmlhttp = new XMLHttpRequest();
+  					} else {// code for IE6, IE5
+  						xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  					}
+					xmlhttp.onreadystatechange=function() {
+  						if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+  							xmlDoc = xmlhttp.responseText;
+  							audio = xmlDoc.getElementsByTagName("audio").childNodes[0].nodeValue;
+  							// Need to set audio and play it
+    					}
+  					}
+  					shortLink = document.getElementById("responseDiv").value
+  					req = "http://people.ischool.berkeley.edu/~azimmomin/server/playlist?name=" + shortLink + "&skipped=" + skipped;
+					xmlhttp.open("GET", req, true);
+					xmlhttp.send();
+				}
+
 				$(document).ready(function() {
 					// initially disable submit button until we get correct input.
 					$('input[type=submit]').attr('disabled', 'disabled');
-					$("#user-input").submit(sendPostReq);
+					//$("#user-input").submit(sendPostReq);
 				});
 			</script>
 			</div>
