@@ -43,10 +43,11 @@
 			</p>
 			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 			<script>
+				var isPaused = false;
 				// Checks if input for short-link is correct.
 				function validate() {
 					var regex = "^[a-zA-Z]+$"
-					var val = document.getElementById("short-link").value;
+					var val = document.getElementById("short-url").value;
 					// input is correct, re-enable submit button.
 					if (val.match(regex) != null) {
 						$('input[type=submit]').removeAttr('disabled');
@@ -63,16 +64,21 @@
   					}
 					xmlhttp.onreadystatechange=function() {
   						if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-  							xmlDoc = xmlhttp.responseText;
-  							document.getElementById("responseDiv").innerHTML = xmlDoc.getElementsByTagName("newlink").childNodes[0].nodeValue;
-  							audio = xmlDoc.getElementsByTagName("audioFile").childNodes[0].nodeValue;
-  							document.getElementById("mp3").src = audio;
-  							document.getElementById("mp3").play();
+  							resp = xmlhttp.responseText.split(",");
+  							link = resp[0]
+  							audio = resp[1]
+  							/*document.getElementById("responseDiv").innerHTML = xmlDoc.getElementsByTagName("newlink").childNodes[0].nodeValue;
+  							audio = xmlDoc.getElementsByTagName("audioFile").childNodes[0].nodeValue;*/
+  							document.getElementById("urlDisplay").innerHTML = link;
+  							document.getElementById("mp3audio").src = audio
+  							name = audio.split('.');
+  							document.getElementById("songInfo").innerHTML = name[0];
+  							document.getElementById("mp3audio").play();
     					}
   					}
-  					search = document.getElementById("searchBar").value;
+  					search = document.getElementById("searchbar").value;
   					link = document.getElementById("short_link").value;
-  					req = "http://people.ischool.berkeley.edu/~azimmomin/server/playlist?search=" + search + "&short=" + link;
+  					req = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts?search=" + search + "&short=" + link;
 					xmlhttp.open("POST", req, true);
 					xmlhttp.send();
 				}
@@ -85,18 +91,33 @@
   					}
 					xmlhttp.onreadystatechange=function() {
   						if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-  							xmlDoc = xmlhttp.responseText;
-  							audio = xmlDoc.getElementsByTagName("audiofile").childNodes[0].nodeValue;
+  							audio = xmlhttp.responseText;
+  							//audio = xmlDoc.getElementsByTagName("audiofile").childNodes[0].nodeValue;
   							document.getElementById("mp3").src = audio;
+  							name = audio.split(".");
+  							document.getElementById("songInfo").innerHTML = name[0];
   							document.getElementById("mp3").play()
     					}
   					}
   					shortLink = document.getElementById("responseDiv").value
-  					req = "http://people.ischool.berkeley.edu/~azimmomin/server/playlist?name=" + shortLink + "&skipped=" + skipped;
+  					req = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + shortLink + "?skipped=" + skipped;
 					xmlhttp.open("GET", req, true);
 					xmlhttp.send();
 				}
 
+				function play() {
+					audio = document.getElementById('mp3audio');
+					if (isPaused && audio.src != "") {
+						audio.play();
+					}
+				}
+
+				function pause() {
+					audio = document.getElementById('mp3audio');
+					if (!isPaused && audio.src != "") {
+						audio.pause();
+					}
+				}
 				$(document).ready(function() {
 					// initially disable submit button until we get correct input.
 					$('input[type=submit]').attr('disabled', 'disabled');
