@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
+	<meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../static/css/default.css">
 	<title>The Battle of the DJs</title>
 </head>
@@ -12,19 +13,19 @@
 <!-- Search Bar -->
 <div id="search">
 	<form id="searchbar1">
-	    <input id="searchbar" type="text" class="textinput" name="q" size="40" maxlength="120">
-        <input type="submit" value="search" class="submitbutton" onClick="searchBtnClick()">
+	    <input id="searchbar" type="text" class="textinput" required name="q" size="40" maxlength="120">
+        <input type="submit" value="search" class="submitbutton">
 	</form>
 </div>
 
 <!-- Shortened URL Input -->
-<div id="shorturl">
+<!--<div id="shorturl">
 	<form id="shortened-url">
         <p>Share with your link: </p>
-	    <input id="short-url" type="text" class="textinput" name="short" required onkeyup="validate()" size="21">
+	    <input id="short-url" type="text" class="textinput" name="short" onkeyup="validate()" size="21">
         <input type="submit" value="shorten" class="submitbutton">
 	</form>
-</div>
+</div> -->
 
 <!-- MP3 Player -->
 <div id="mp3player">
@@ -41,78 +42,72 @@
 </div>
 
 <div id="urlDisplay">
-    <p>Your shortened link is: </p>
 </div>
 
 </center>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
 	var isPaused = false;
-	// Checks if input for short-link is correct.
-	function validate() {
-		var regex = "^[a-zA-Z]+$"
-		var val = document.getElementById("short-url").value;
-		// input is correct, re-enable submit button.
-		if (val.match(regex) != null) {
-			$('input[type=submit]').removeAttr('disabled');
-		} else {
-			$('input[type=submit]').attr('disabled', 'disabled');
-		}
-	}
+	var short_link = "";
+
 	/* Use this function to send POST requests to server when a new search is typed in. */
 	function searchBtnClick() {
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-				xmlhttp = new XMLHttpRequest();
-			} else {// code for IE6, IE5
-				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			}
+			xmlhttp = new XMLHttpRequest();
+		} else {// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
 		xmlhttp.onreadystatechange=function() {
-				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-					resp = xmlhttp.responseText.split(",");
-					link = resp[0]
-					audio = resp[1]
-					/*document.getElementById("responseDiv").innerHTML = xmlDoc.getElementsByTagName("newlink").childNodes[0].nodeValue;
-					audio = xmlDoc.getElementsByTagName("audioFile").childNodes[0].nodeValue;*/
-					document.getElementById("urlDisplay").innerHTML = link;
-					document.getElementById("mp3audio").src = audio
-					name = audio.split('.');
-					document.getElementById("songInfo").innerHTML = name[0];
-					document.getElementById("mp3audio").play();
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+				resp = xmlhttp.responseText.split(",");
+				link = resp[0];
+				audio = resp[1];
+				short_link = link;
+				document.getElementById("urlDisplay").innerHTML = "Share your link with: " + link;
+				document.getElementById("mp3audio").src = audio;
+				name = audio.split('.');
+				document.getElementById("songInfo").innerHTML = name[0];
+				document.getElementById("mp3audio").play();
 			}
-			}
-			search = document.getElementById("searchbar").value;
-			link = document.getElementById("short_link").value;
-			req = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts?search=" + search + "&short=" + link;
+		}
+		search = document.getElementById("searchbar").value;
+		new_link = generateShort(search);
+		document.getElementById("urlDisplay").innerHTML = "Share your link with: " + new_link;
+		req = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts?search=" + search + "&short=" + new_link;
 		xmlhttp.open("POST", req, true);
 		xmlhttp.send();
+		return false;
 	}
 	/* Use this to get the next song when a song is skipped or ended.*/
 	function getNextSong(skipped) {
+		if (short_link == "") {
+			return false;
+		}
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 				xmlhttp = new XMLHttpRequest();
 			} else {// code for IE6, IE5
 				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 			}
 		xmlhttp.onreadystatechange=function() {
-				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-					audio = xmlhttp.responseText;
-					//audio = xmlDoc.getElementsByTagName("audiofile").childNodes[0].nodeValue;
-					document.getElementById("mp3").src = audio;
-					name = audio.split(".");
-					document.getElementById("songInfo").innerHTML = name[0];
-					document.getElementById("mp3").play()
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+				audio = xmlhttp.responseText;
+				document.getElementById("mp3").src = audio;
+				name = audio.split(".");
+				document.getElementById("songInfo").innerHTML = name[0];
+				document.getElementById("mp3").play();
 			}
-			}
-			shortLink = document.getElementById("responseDiv").value
-			req = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + shortLink + "?skipped=" + skipped;
+		}
+		req = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + shortLink + "?skipped=" + skipped;
 		xmlhttp.open("GET", req, true);
 		xmlhttp.send();
+		return false;
 	}
 
 	function play() {
 		audio = document.getElementById('mp3audio');
 		if (isPaused && audio.src != "") {
 			audio.play();
+			isPaused = false;
 		}
 	}
 
@@ -120,12 +115,21 @@
 		audio = document.getElementById('mp3audio');
 		if (!isPaused && audio.src != "") {
 			audio.pause();
+			isPaused = true;
 		}
+	}
+
+	function generateShort(search_val) {
+		var short_val = search_val.charAt(0);
+		var end = search_val.length;
+		short_val += search_val.charAt(end - 1);
+		short_val += Math.floor(Math.random() * end) + 1;
+		return short_val;
 	}
 	$(document).ready(function() {
 		// initially disable submit button until we get correct input.
-		$('input[type=submit]').attr('disabled', 'disabled');
-		//$("#user-input").submit(sendPostReq);
+		//$('input[type=submit]').attr('disabled', 'disabled');
+		$("#searchbar1").submit(searchBtnClick);
 	});
 </script>
 </body>
