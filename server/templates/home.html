@@ -71,7 +71,7 @@
 			}
 		}
 		search = document.getElementById("searchbar").value;
-		new_link = generateShort(search);
+		new_link = generateShort();
 		document.getElementById("urlDisplay").innerHTML = "Share your link with: " + new_link;
 		req = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts?search=" + search + "&short=" + new_link;
 		xmlhttp.open("POST", req, true);
@@ -119,11 +119,12 @@
 		}
 	}
 
-	function generateShort(search_val) {
-		var short_val = search_val.charAt(0);
-		var end = search_val.length;
-		short_val += search_val.charAt(end - 1);
-		short_val += Math.floor(Math.random() * end) + 1;
+	function generateShort() {
+		var short_val = '';
+		var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		for (var i = 1; i < 10; i += ) {
+			short_val += Math.floor(Math.random() * possible.length());
+		}
 		return short_val;
 	}
 	$(document).ready(function() {
