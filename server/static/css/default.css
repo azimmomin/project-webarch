@@ -1,34 +1,39 @@
 #mp3player {
-	background-color:#ffffff;
-	border-radius:10px;
-	color:#000000;
+    background-color:#000000;
+    border-radius:10px;
+    color:#000000;
     padding-top:43px;
     padding-bottom:50px;
-    font-family:helvetica, arial, verdana;
-	font-weight:bold;
-	width:300px;
+    font-weight:bold;
+    width:300px;
 }
 
 #mp3player .loader {
-	border:1px solid #000000;
-	height:3px;
-	margin:10px 0px
+    border:1px solid #2ecc71;
+    height:3px;
+    margin:10px 0px
 }
 
 #mp3player .controls a {
     display:inline-block;
-	width:33px;
-	height:33px;
-	margin:0px 14px;
-	overflow:hidden;
+    width:33px;
+    height:33px;
+    margin:0px 14px;
+    overflow:hidden;
 }
 
 #mp3player .controls a:hover {
-	background-color:#2ecc71;
+    background-color:#2ecc71;
 }
 
 #searchbar1{
     padding-top:22px;
+    padding-bottom:15px;
+    background:#000000;
+}
+
+#shortened-url{
+    padding-bottom:22px;
 }
 
 #urlDisplay {
@@ -38,7 +43,7 @@
     margin: 0;
     padding: 5px 10px;
     font-size:14px;
-    border:1px solid #000000; border-right:0px;
+    border:1px solid #2ecc71; border-right:0px;
     border-top-left-radius: 5px 5px;
     border-bottom-left-radius: 5px 5px;
 }
@@ -52,12 +57,12 @@
     cursor: pointer;
     text-align: center;
     color: #ffffff;
-    border: solid 1px #000000; border-right:0px;
-    background: #000000;
+    border: solid 1px #2ecc71; border-right:0px;
+    background: #2ecc71;
    border-top-right-radius: 5px 5px;
     border-bottom-right-radius: 5px 5px;
 }
 
 .submitbutton:hover {
-    background: #2ecc71;
+    background: #27ae60;
 }

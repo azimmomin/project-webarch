@@ -153,4 +153,3 @@ def handle_short_get(short_link):
 
 if __name__ == "__main__":
     app.run(port=int(environ['63048']))
-

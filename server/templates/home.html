@@ -3,12 +3,15 @@
 <head>
 	<meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../static/css/default.css">
-	<title>The Battle of the DJs</title>
+	<title>Audio.ly</title>
+    <style>
+        body {background-color:black}
+    </style>
 </head>
 
 <body>
 
-<center><h1>MP3 Audio Player</h1>
+<center><h1><font face="helvetica, arial, verdana" color="2ecc71">Audio.ly</font></h1>
 
 <!-- Search Bar -->
 <div id="search">
@@ -122,7 +125,7 @@
 	function generateShort() {
 		var short_val = '';
 		var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		for (var i = 1; i < 10; i += ) {
+		for (var i = 1; i < 10; i += 1) {
 			short_val += Math.floor(Math.random() * possible.length());
 		}
 		return short_val;
@@ -135,5 +138,3 @@
 </script>
 </body>
 </html>
-
-
