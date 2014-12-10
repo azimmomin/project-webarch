@@ -16,16 +16,13 @@ genre_db = shelve.open("genre.db")
 # 'link_to_playlist' -> [nextIndex, numSkips, song1, song2, song3]
 playlist_db = shelve.open("playlists.db")
 
-initializedb();
-
-def initializedb():
-    genre_db[HipHop] = [1, playlist1, playlist2]
-    playlist_db[http://people.ischool.berkeley.edu/~azimomin/server/music/HipHop/playlist1] = [3, 0, "Drop It Low.mp3", "Another Kind of Green.mp3", "Hold On, We're Going Home.mp3"]
-    playlist_db[http://people.ischool.berkeley.edu/~azimomin/server/music/HipHop/playlist2] = [3, 0, "Deuces.mp3", "Own It.mp3" ,"My Life.mp3"]
+genre_db["HipHop"] = [1, "playlist1", "playlist2"]
+playlist_db["http://people.ischool.berkeley.edu/~shanthish8/server/music/HipHop/playlist1"] = [3, 0, "Drop It Low.mp3", "Another Kind of Green.mp3", "Hold On, We're Going Home.mp3"]
+playlist_db["http://people.ischool.berkeley.edu/~shanthish8/server/music/HipHop/playlist2"] = [3, 0, "Deuces.mp3", "Own It.mp3" ,"My Life.mp3"]
     # put key -> value mappings in db
     # for genre in music folder: genre_db['genre'] = [1, playlist1_name, playlist2_name]
     # for playlist in genre folder: playlist_db['link_to_playlist'] = [3, 0, song1_name, song2_name]
-    # ----------- 'link_to_playlist' refers to http://people.ischool.berkeley.edu/~azimomin/server/music/genre_name/playlist_name
+    # ----------- 'link_to_playlist' refers to http://people.ischool.berkeley.edu/~shanthish8/server/music/genre_name/playlist_name
 
 ###
 # Home Resource:
@@ -99,26 +96,30 @@ def i253():
 ###
 @app.route('/shorts', methods=['POST'])
 def handle_short_post():
-    genre = str(request.get['search'])
+    initial = "first call"
+    print initial
+    genre = str(request.args.get('search',''))
     link = link_to_playlist(genre)
-    short = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + str(request.get['short'])
-    if (db[short] != None) :
+    short = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts/" + str(request.args.get('short',''))
+    if (short in db.keys()) :
         resp = flask.make_response("404: This short url is already in use.",404);
         return resp 
     db[short] = link
-    first_song = link + playlist_db[link][2]
+    first_song = link + "/" + playlist_db[link][2]
     message = link + "," + first_song
-    return message
+    resp = jsonify({'response': message})
+    resp.status_code = 200
+    return resp
     #Get request with keyword, --- key: short url value: [playlist, current index]
     #SKIP, NEXT --- SKIP curr_index+=1 num_skips+=1, NEXT curr_index+=1; send playlist[curr_index]
 def link_to_playlist(genre):
-    link = "http://people.ischool.berkeley.edu/~azimmomin/server/music/" + genre + "/"
+    link = "http://people.ischool.berkeley.edu/~shanthish8/server/music/" + genre + "/"
     playlists = genre_db[genre]
     current = playlists[0]
     playlist_name = playlists[current]
-    if current == playlists.length:
-        current = 1
-    else
+    if current == len(playlists) - 1:
+        current = 2
+    else:
         current += 1
     playlists[0] = current
     #increment count and store modified array in genre_db
@@ -129,8 +130,8 @@ def link_to_playlist(genre):
 @app.route('/shorts/<short_link>', methods=['GET'])
 def handle_short_get(short_link):
     # implement GET logic.
-    isSkip = bool(request.get(skipped))
-    short = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + str(short_link)
+    isSkip = bool(request.args.get('skipped',''))
+    short = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts/" + str(short_link)
     link = db.get(short) #needs to return 404
     if (link == None):
         resp = flask.make_response("404: No playlist is associated with this short url",404);
@@ -151,8 +152,8 @@ def handle_short_get(short_link):
     playlist_db[link][0] = index
     
     #return next song
-    song_link = link + song_name
+    song_link = link + "/" + song_name
     return song_link
 
 if __name__ == "__main__":
-    app.run(port=int(environ['63048']))
+    app.run(port=int(environ['FLASK_PORT']))
