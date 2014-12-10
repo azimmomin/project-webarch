@@ -11,7 +11,9 @@
 
 <body>
 
-<center><h1><font face="helvetica, arial, verdana" color="2ecc71">Audio.ly</font></h1>
+<center>
+
+<h1><font face="helvetica, arial, verdana" color="2ecc71">Audio.ly</font></h1>
 
 <!-- Search Bar -->
 <div id="search">
@@ -32,7 +34,8 @@
 
 <!-- MP3 Player -->
 <div id="mp3player">
-    <audio id="mp3audio" src="" type="audio/mpeg" onended="getNextSong('false')" >
+	<!--  type="audio/mpeg" -->
+    <audio id="mp3audio" src="None" onended="getNextSong('false')" >
     </audio>
     <div class="songInfo"></div>
 	<div class="loader">
@@ -55,13 +58,14 @@
 
 	/* Use this function to send POST requests to server when a new search is typed in. */
 	function searchBtnClick() {
+		var xmlhttp = null;
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 			xmlhttp = new XMLHttpRequest();
 		} else {// code for IE6, IE5
 			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
 		xmlhttp.onreadystatechange=function() {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			if (xmlhttp.readyState= 4 && xmlhttp.status==200) {
 				resp = xmlhttp.responseText.split(",");
 				link = resp[0];
 				audio = resp[1];
@@ -72,14 +76,15 @@
 				document.getElementById("songInfo").innerHTML = name[0];
 				document.getElementById("mp3audio").play();
 			}
+			return false;
 		}
 		search = document.getElementById("searchbar").value;
 		new_link = generateShort();
 		document.getElementById("urlDisplay").innerHTML = "Share your link with: " + new_link;
-		req = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts?search=" + search + "&short=" + new_link;
+		//req = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts/?search=" + search + "&short=" + new_link;
+		args = "search=" + search + "&short=" + new_link
 		xmlhttp.open("POST", req, true);
-		xmlhttp.send();
-		return false;
+		xmlhttp.send(args);
 	}
 	/* Use this to get the next song when a song is skipped or ended.*/
 	function getNextSong(skipped) {
@@ -100,7 +105,7 @@
 				document.getElementById("mp3").play();
 			}
 		}
-		req = "http://people.ischool.berkeley.edu/~azimmomin/server/shorts/" + shortLink + "?skipped=" + skipped;
+		req = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts/" + shortLink + "?skipped=" + skipped;
 		xmlhttp.open("GET", req, true);
 		xmlhttp.send();
 		return false;
@@ -108,7 +113,7 @@
 
 	function play() {
 		audio = document.getElementById('mp3audio');
-		if (isPaused && audio.src != "") {
+		if (isPaused && audio.src != "None") {
 			audio.play();
 			isPaused = false;
 		}
@@ -116,7 +121,7 @@
 
 	function pause() {
 		audio = document.getElementById('mp3audio');
-		if (!isPaused && audio.src != "") {
+		if (!isPaused && audio.src != "None") {
 			audio.pause();
 			isPaused = true;
 		}
@@ -126,7 +131,8 @@
 		var short_val = '';
 		var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		for (var i = 1; i < 10; i += 1) {
-			short_val += Math.floor(Math.random() * possible.length());
+			index = Math.floor(Math.random() * possible.length);
+			short_val += possible.charAt(index)
 		}
 		return short_val;
 	}

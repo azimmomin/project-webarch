@@ -112,7 +112,7 @@ def handle_short_post():
     #Get request with keyword, --- key: short url value: [playlist, current index]
     #SKIP, NEXT --- SKIP curr_index+=1 num_skips+=1, NEXT curr_index+=1; send playlist[curr_index]
 def link_to_playlist(genre):
-    link = "http://people.ischool.berkeley.edu/~azimomin/server/music/" + genre + "/"
+    link = "http://people.ischool.berkeley.edu/~azimmomin/server/music/" + genre + "/"
     playlists = genre_db[genre]
     current = playlists[0]
     playlist_name = playlists[current]
