@@ -19,6 +19,9 @@ playlist_db = shelve.open("playlists.db")
 initializedb();
 
 def initializedb():
+    genre_db[HipHop] = [1, playlist1, playlist2]
+    playlist_db[http://people.ischool.berkeley.edu/~azimomin/server/music/HipHop/playlist1] = [3, 0, "Drop It Low.mp3", "Another Kind of Green.mp3", "Hold On, We're Going Home.mp3"]
+    playlist_db[http://people.ischool.berkeley.edu/~azimomin/server/music/HipHop/playlist2] = [3, 0, "Deuces.mp3", "Own It.mp3" ,"My Life.mp3"]
     # put key -> value mappings in db
     # for genre in music folder: genre_db['genre'] = [1, playlist1_name, playlist2_name]
     # for playlist in genre folder: playlist_db['link_to_playlist'] = [3, 0, song1_name, song2_name]
