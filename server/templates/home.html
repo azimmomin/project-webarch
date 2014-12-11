@@ -58,13 +58,14 @@
 
 	/* Use this function to send POST requests to server when a new search is typed in. */
 	function searchBtnClick() {
-		var xmlhttp = null;
+		var xmlhttp;
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 			xmlhttp = new XMLHttpRequest();
 		} else {// code for IE6, IE5
 			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
 		xmlhttp.onreadystatechange=function() {
+			console.log(xmlhttp.responseText)
 			if (xmlhttp.readyState= 4 && xmlhttp.status==200) {
 				resp = xmlhttp.responseText.split(",");
 				link = resp[0];
@@ -76,15 +77,16 @@
 				document.getElementById("songInfo").innerHTML = name[0];
 				document.getElementById("mp3audio").play();
 			}
-			return false;
 		}
 		search = document.getElementById("searchbar").value;
 		new_link = generateShort();
 		document.getElementById("urlDisplay").innerHTML = "Share your link with: " + new_link;
-		//req = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts/?search=" + search + "&short=" + new_link;
-		args = "search=" + search + "&short=" + new_link
+		req = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts?search=" + search + "&short=" + new_link;
+		//url = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts"
+		//args = "search=" + search + "&short=" + new_link
 		xmlhttp.open("POST", req, true);
-		xmlhttp.send(args);
+		xmlhttp.send();
+		return false;
 	}
 	/* Use this to get the next song when a song is skipped or ended.*/
 	function getNextSong(skipped) {
