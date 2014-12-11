@@ -35,8 +35,7 @@
 <!-- MP3 Player -->
 <div id="mp3player">
 	<!--  type="audio/mpeg" -->
-    <audio id="mp3audio" src="None" onended="getNextSong('false')" >
-    </audio>
+    <audio id="mp3audio" src="None" onended="getNextSong('false')"></audio>
     <div class="songInfo"></div>
 	<div class="loader">
 	</div>
@@ -54,7 +53,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
 	var isPaused = false;
-	var short_link = "";
+	//var short_link = "";
 
 	/* Use this function to send POST requests to server when a new search is typed in. */
 	function searchBtnClick() {
@@ -70,17 +69,18 @@
 				resp = xmlhttp.responseText.split(",");
 				link = resp[0];
 				audio = resp[1];
-				short_link = link;
+				//short_link = link;
 				document.getElementById("urlDisplay").innerHTML = "Share your link with: " + link;
 				document.getElementById("mp3audio").src = audio;
 				name = audio.split('.');
+				//document.getElementById("urlDisplay").innerHTML = "Share your link with: " + link
 				document.getElementById("songInfo").innerHTML = name[0];
 				document.getElementById("mp3audio").play();
 			}
 		}
 		search = document.getElementById("searchbar").value;
 		new_link = generateShort();
-		document.getElementById("urlDisplay").innerHTML = "Share your link with: " + new_link;
+		//document.getElementById("urlDisplay").innerHTML = "Share your link with: " + new_link;
 		req = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts?search=" + search + "&short=" + new_link;
 		//url = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts"
 		//args = "search=" + search + "&short=" + new_link
