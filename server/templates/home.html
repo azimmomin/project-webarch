@@ -11,10 +11,10 @@
 
 <body>
 
-<div id="upload-div">
+<!--<div id="upload-div">
      <input type="submit" value="Upload Playlist" class="submitbutton">
 </div>
-
+-->
 <h1 id="header">Audio.ly</h1>
 
 <!-- Search Bar -->
@@ -46,14 +46,14 @@
 		<a id="pause" onClick="pause()" href="#"><img src="http://cdn.mysitemyway.com/icons-watermarks/flat-circle-white-on-black/foundation/foundation_pause/foundation_pause_flat-circle-white-on-black_128x128.png" alt="Pause Icon" width="30" height="30"><span>Pause</span></a>
 		<a id="next" onClick="getNextSong('true')" href="#"><img src="http://cdn.mysitemyway.com/icons-watermarks/flat-circle-white-on-black/raphael/raphael_button-fast-forward/raphael_button-fast-forward_flat-circle-white-on-black_128x128.png" alt="Next Icon" width="30" height="30"><span>Next</span></a>
 	</div>
-</div>
 
-<div id="urlDisplay">
+	<div id="urlDisplay">
+	</div>
 </div>
 
 <div id="rank-div">
     <table id="rankings" style="width:35%">
-      <tr>
+      <!--<tr>
         <th>Playlist</th>		
         <th>Number of Skips</th>
       </tr>
@@ -65,6 +65,7 @@
         <td>Playlist 2</td>		
         <td>0</td>
       </tr>
+  -->
     </table>
 </div>
 
@@ -87,7 +88,6 @@
 				resp = xmlhttp.responseText.split(",");
 				link = resp[0];
 				audio = resp[1];
-				data = resp[3:];
 				//short_link = link;
 				document.getElementById("urlDisplay").innerHTML = "Share your link with: " + link;
 				document.getElementById("mp3audio").src = audio;
@@ -95,6 +95,7 @@
 				//document.getElementById("urlDisplay").innerHTML = "Share your link with: " + link
 				document.getElementById("songInfo").innerHTML = name[0];
 				document.getElementById("mp3audio").play();
+				data = resp[3:];
 				var table = document.getElementById("rankings");
 				table.innerHTML = ""
 				var hdr = table.insertRow(0);
@@ -108,12 +109,12 @@
 					var cell2 = row.insertCell(1);
 					cell1.innerHTML = data[i];
 					cell2.innerHTML = num_skips[i + 1];
-				}
+				}*/
 			}
 		}
 		search = document.getElementById("searchbar").value;
 		new_link = generateShort();
-		//document.getElementById("urlDisplay").innerHTML = "Share your link with: " + new_link;
+		document.getElementById("urlDisplay").innerHTML = "Share your link with: " + new_link;
 		req = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts?search=" + search + "&short=" + new_link;
 		//url = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts"
 		//args = "search=" + search + "&short=" + new_link
