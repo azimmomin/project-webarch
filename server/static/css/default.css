@@ -42,6 +42,7 @@
 }
 
 #urlDisplay {
+    color:white;
 }
 
 #header{
@@ -101,4 +102,8 @@ th {
 .submitbutton:hover {
     background: #27ae60;
     text-align: center;
+}
+
+#songInfo {
+    color: white;
 }

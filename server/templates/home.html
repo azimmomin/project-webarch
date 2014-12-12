@@ -38,7 +38,7 @@
 <div id="mp3player">
 	<!--  type="audio/mpeg" -->
     <audio id="mp3audio" src="None" onended="getNextSong('false')"></audio>
-    <div class="songInfo"></div>
+    <div id="songInfo"></div>
 	<div class="loader">
 	</div>
 	<div class="controls">
@@ -52,22 +52,18 @@
 </div>
 
 <div id="rank-div">
-    <table id="rankings" style="width:59%">
+    <table id="rankings" style="width:35%">
       <tr>
-        <th>Username</th>		
-        <th>Ranking</th>
+        <th>Playlist</th>		
+        <th>Number of Skips</th>
       </tr>
       <tr>
-        <td>user_one</td>		
-        <td>1</td>
+        <td>Playlist 1</td>		
+        <td>0</td>
       </tr>
       <tr>
-        <td>user_two</td>		
-        <td>2</td>
-      </tr>
-      <tr>
-        <td>user_three</td>		
-        <td>3</td>
+        <td>Playlist 2</td>		
+        <td>0</td>
       </tr>
     </table>
 </div>
@@ -91,6 +87,7 @@
 				resp = xmlhttp.responseText.split(",");
 				link = resp[0];
 				audio = resp[1];
+				data = resp[3:];
 				//short_link = link;
 				document.getElementById("urlDisplay").innerHTML = "Share your link with: " + link;
 				document.getElementById("mp3audio").src = audio;
@@ -98,6 +95,20 @@
 				//document.getElementById("urlDisplay").innerHTML = "Share your link with: " + link
 				document.getElementById("songInfo").innerHTML = name[0];
 				document.getElementById("mp3audio").play();
+				var table = document.getElementById("rankings");
+				table.innerHTML = ""
+				var hdr = table.insertRow(0);
+				var hdr_cell1 = hdr.insertCell(0);
+				var hdr_cell2 = hdr.insertCell(1);
+				hdr_cell1.innerHTML = "<b>Playlist</b>";
+				hdr_cell2.innerHTML = "<b>Number of Skips</b>";
+				for (var i = 0; i < data.length; i += 2) {
+					var row = table.insertRow(-1);
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					cell1.innerHTML = data[i];
+					cell2.innerHTML = num_skips[i + 1];
+				}
 			}
 		}
 		search = document.getElementById("searchbar").value;
@@ -127,6 +138,21 @@
 				name = audio.split(".");
 				document.getElementById("songInfo").innerHTML = name[0];
 				document.getElementById("mp3").play();
+				data = resp[2:];
+				var table = document.getElementById("rankings");
+				table.innerHTML = ""
+				var hdr = table.insertRow(0);
+				var hdr_cell1 = hdr.insertCell(0);
+				var hdr_cell2 = hdr.insertCell(1);
+				hdr_cell1.innerHTML = "<b>Playlist</b>";
+				hdr_cell2.innerHTML = "<b>Number of Skips</b>";
+				for (var i = 0; i < data.length; i += 2) {
+					var row = table.insertRow(-1);
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					cell1.innerHTML = data[i];
+					cell2.innerHTML = num_skips[i + 1];
+				}
 			}
 		}
 		req = "http://people.ischool.berkeley.edu/~shanthish8/server/shorts/" + shortLink + "?skipped=" + skipped;
@@ -167,4 +193,4 @@
 	});
 </script>
 </body>
-</html>
+</html>o
